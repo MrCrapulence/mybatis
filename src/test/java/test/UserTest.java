@@ -1,6 +1,8 @@
 package test;
 
+import com.alibaba.fastjson.JSON;
 import com.hank.dao.UserDao;
+import com.hank.domain.Account;
 import com.hank.domain.User;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -80,6 +82,25 @@ public class UserTest {
         userDao.deleteById(4);
         sqlSession.commit();
         sqlSession.close();
+    }
+
+    /**
+     * 查询测试所有用户及用户下账户集合
+     * 每次都建SqlSession是因为创建多个session实例，防止多线程问题
+     */
+    @Test
+    public void findAllWithAccount() {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        UserDao userDao = sqlSession.getMapper(UserDao.class);
+        List<User> list = userDao.findAllwithAccount();
+        for (User user : list) {
+            System.out.println(user.getUsername());
+            if (user.getAccount() != null) {
+                for (Account account : user.getAccount()) {
+                    System.out.println(user.getUsername() + ":" + account.getMoney());
+                }
+            }
+        }
     }
 
 

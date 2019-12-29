@@ -2,10 +2,7 @@ package com.hank.dao;
 
 import com.hank.domain.Account;
 import com.hank.domain.User;
-import org.apache.ibatis.annotations.One;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
@@ -23,8 +20,12 @@ public interface AccountDao {
             @Result(id = true, property = "id", column = "id"),
             @Result(property = "uid", column = "uid"),
             @Result(property = "money", column = "money"),
+            // 下面是添加对象属性的方式，此处的column为两张表的关联列
             @Result(property = "user", column = "uid", javaType = User.class,
-                    one = @One(select = "com.hank.dao.UserDao.findById", fetchType = FetchType.LAZY))
+                    one = @One(select = "com.hank.dao.UserDao.findUserById", fetchType = FetchType.LAZY))
     })
     List<Account> findAccountWithUser();
+
+    @Select("select * from account where uid = #{uid}")
+    Account findByUid(Integer uid);
 }

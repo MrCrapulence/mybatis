@@ -1,6 +1,7 @@
 package com.hank.domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class User {
     private Integer id;
@@ -8,6 +9,7 @@ public class User {
     private Date birthday;
     private String sex;
     private String address;
+    private List<Account> account;
 
     public Integer getId() {
         return id;
@@ -47,5 +49,13 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public List<Account> getAccount() {
+        return account;
+    }
+
+    public void setAccount(List<Account> account) {
+        this.account = account;
     }
 }
